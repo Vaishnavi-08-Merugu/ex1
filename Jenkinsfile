@@ -16,10 +16,9 @@ pipeline {
             }
         }
 
-        stage('Build and Test') {
+        stage('Test') {
             steps {
-                echo 'Building and testing the project...'
-                bat 'npm run build'
+                echo 'Running tests...'
                 bat 'npm run test'
             }
         }
