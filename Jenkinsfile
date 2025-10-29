@@ -1,24 +1,28 @@
 pipeline {
     agent any
-
     stages {
         stage('Checkout Code') {
             steps {
                 checkout scm
             }
         }
-
         stage('Install Dependencies') {
             steps {
                 echo 'Installing npm dependencies...'
                 bat 'npm install'      
-                bat 'npm --version || true'
             }
         }
-
-        stage('Test') {
+        stage('Install dependencies') {
+      steps {
+        bat 'node --version || true'
+        bat 'npm --version || true'
+        bat 'npm ci'           
+      }
+    }
+        stage('Build and Test') {
             steps {
-                echo 'Running tests...'
+                echo 'Building and testing the project...'
+                bat 'npm run build'
                 bat 'npm run test'
             }
         }
@@ -34,10 +38,10 @@ pipeline {
 
     post {
         success {
-            echo 'Build completed'
+            echo 'Build completed successfully!'
         }
         failure {
-            echo 'Build failed.'
+            echo 'Build failed! Please check logs.'
         }
     }
 }
